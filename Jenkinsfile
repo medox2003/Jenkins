@@ -11,6 +11,19 @@ pipeline {
                 sh 'mvn clean package -DskipTests'
             }
         }
+        stage('SonarQube Analysis') {
+            steps {
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                    sh """
+                        mvn sonar:sonar \
+                        -Dsonar.projectKey=java-maven \
+                        -Dsonar.projectName='java-maven' \
+                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.token=${SONAR_TOKEN}
+                    """
+                }
+            }
+        }
         stage('Test') {
             steps {
                 sh 'mvn test'
