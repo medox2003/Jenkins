@@ -8,23 +8,17 @@ pipeline {
         }
         stage('Build') {
             steps {
-                dir('java-maven') {
-                    sh 'mvn clean package -DskipTests'
-                }
+                sh 'mvn clean package -DskipTests'
             }
         }
         stage('Test') {
             steps {
-                dir('java-maven') {
-                    sh 'mvn test'
-                }
+                sh 'mvn test'
             }
         }
         stage('Docker Build') {
             steps {
-                dir('java-maven') {
-                    sh 'docker build -t medox2003/java-maven:latest .'
-                }
+                sh 'docker build -t medox2003/java-maven:latest .'
             }
         }
         stage('Docker Push') {
